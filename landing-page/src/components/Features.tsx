@@ -1,31 +1,7 @@
 import { ShoppingCart, BarChart3, Bell, TrendingUp, Smartphone, Zap } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import AnimatedSection from './AnimatedSection';
 
 const Features = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
-
   const features = [
     {
       icon: <ShoppingCart className="w-6 h-6" />,
@@ -54,66 +30,61 @@ const Features = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="py-20 bg-white">
+    <section className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content - Features */}
-          <div
-            className={`transform transition-all duration-1000 ${
-              isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
-            }`}
-          >
-            <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 rounded-full text-sm font-medium mb-6">
-              <Smartphone className="w-4 h-4 mr-2" />
-              Progressive Web App
+          <AnimatedSection animation="slideLeft" duration={0.8}>
+            <div>
+              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 rounded-full text-sm font-medium mb-6">
+                <Smartphone className="w-4 h-4 mr-2" />
+                Progressive Web App
+              </div>
+
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
+                Manage and Order{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-600">
+                  Smarter
+                </span>{' '}
+                with Our PWA
+              </h2>
+
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+                Our Progressive Web App lets you order supplies, monitor sales, and track promotions 
+                directly from your phone or computer. Experience the future of Agrivet management.
+              </p>
+
+              {/* Features List */}
+              <div className="space-y-6 mb-8">
+                {features.map((feature, index) => (
+                  <AnimatedSection
+                    key={index}
+                    animation="slideLeft"
+                    delay={0.1 * index}
+                    duration={0.7}
+                  >
+                    <div className="group flex items-start space-x-4">
+                      <div className={`flex-shrink-0 w-12 h-12 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
+                        {feature.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-1">{feature.title}</h3>
+                        <p className="text-gray-600">{feature.description}</p>
+                      </div>
+                    </div>
+                  </AnimatedSection>
+                ))}
+              </div>
+
+              <button className="group flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                <span className="font-semibold">Access PWA Now</span>
+                <Zap size={20} className="group-hover:rotate-12 transition-transform duration-300" />
+              </button>
             </div>
-
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-              Manage and Order{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-600">
-                Smarter
-              </span>{' '}
-              with Our PWA
-            </h2>
-
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Our Progressive Web App lets you order supplies, monitor sales, and track promotions 
-              directly from your phone or computer. Experience the future of Agrivet management.
-            </p>
-
-            {/* Features List */}
-            <div className="space-y-6 mb-8">
-              {features.map((feature, index) => (
-                <div
-                  key={index}
-                  className={`group flex items-start space-x-4 transform transition-all duration-700 ${
-                    isVisible ? 'translate-x-0 opacity-100' : '-translate-x-10 opacity-0'
-                  }`}
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
-                  <div className={`flex-shrink-0 w-12 h-12 bg-gradient-to-r ${feature.color} rounded-lg flex items-center justify-center text-white group-hover:scale-110 transition-transform duration-300`}>
-                    {feature.icon}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-1">{feature.title}</h3>
-                    <p className="text-gray-600">{feature.description}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <button className="group flex items-center space-x-2 px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-              <span className="font-semibold">Access PWA Now</span>
-              <Zap size={20} className="group-hover:rotate-12 transition-transform duration-300" />
-            </button>
-          </div>
+          </AnimatedSection>
 
           {/* Right Content - Visual Representation */}
-          <div
-            className={`transform transition-all duration-1000 delay-300 ${
-              isVisible ? 'translate-x-0 opacity-100' : 'translate-x-10 opacity-0'
-            }`}
-          >
+          <AnimatedSection animation="slideRight" delay={0.3} duration={0.8}>
             <div className="relative">
               {/* Phone Mockup */}
               <div className="relative mx-auto w-64 lg:w-80">
@@ -197,28 +168,26 @@ const Features = () => {
               {/* Background Decoration */}
               <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-emerald-600 rounded-3xl -z-10 transform rotate-6 scale-95 opacity-20"></div>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
 
         {/* Bottom CTA Banner */}
-        <div
-          className={`mt-20 bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 md:p-12 text-center transform transition-all duration-1000 delay-700 ${
-            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}
-        >
-          <h3 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h3>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Download our PWA today and experience seamless Agrivet management at your fingertips
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-white text-gray-900 rounded-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-              Install PWA
-            </button>
-            <button className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-              View Demo
-            </button>
+        <AnimatedSection animation="fadeInUp" delay={0.7} duration={0.8}>
+          <div className="mt-20 bg-gradient-to-r from-gray-900 to-gray-800 rounded-2xl p-8 md:p-12 text-center">
+            <h3 className="text-3xl font-bold text-white mb-4">Ready to Get Started?</h3>
+            <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+              Download our PWA today and experience seamless Agrivet management at your fingertips
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="px-8 py-4 bg-white text-gray-900 rounded-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                Install PWA
+              </button>
+              <button className="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                View Demo
+              </button>
+            </div>
           </div>
-        </div>
+        </AnimatedSection>
       </div>
     </section>
   );

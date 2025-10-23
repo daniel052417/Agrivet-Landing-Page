@@ -1,31 +1,7 @@
 import { ShoppingBag, Stethoscope, Sprout, Heart, ArrowRight } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import AnimatedSection from './AnimatedSection';
 
 const Products = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
-
   const productCategories = [
     {
       icon: <ShoppingBag className="w-8 h-8" />,
@@ -65,40 +41,44 @@ const Products = () => {
     },
   ];
 
+  const trustBadges = [
+    { icon: '✓', text: 'Quality Assured' },
+    { icon: '🚚', text: 'Fast Delivery' },
+    { icon: '💯', text: 'Best Prices' },
+    { icon: '🤝', text: 'Expert Support' },
+  ];
+
   return (
-    <section ref={sectionRef} id="products" className="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <section id="products" className="py-20 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div
-          className={`text-center mb-16 transform transition-all duration-1000 ${
-            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}
-        >
-          <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
-            Our Products
+        <AnimatedSection animation="fadeInUp" duration={0.6}>
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
+              Our Products
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              Featured{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-600">
+                Categories
+              </span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Browse our comprehensive selection of agricultural and veterinary products
+            </p>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Featured{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-emerald-600">
-              Categories
-            </span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Browse our comprehensive selection of agricultural and veterinary products
-          </p>
-        </div>
+        </AnimatedSection>
 
         {/* Product Categories Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {productCategories.map((category, index) => (
-            <div
+            <AnimatedSection
               key={index}
-              className={`group transform transition-all duration-700 ${
-                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-              }`}
-              style={{ transitionDelay: `${index * 100}ms` }}
+              animation="slideUp"
+              delay={0.1 * index}
+              duration={0.7}
             >
-              <div className="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-full">
+              <div className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-full">
                 {/* Card Content */}
                 <div className="p-6">
                   {/* Icon with Gradient Background */}
@@ -134,18 +114,14 @@ const Products = () => {
                 </div>
 
                 {/* Hover Effect Border */}
-                <div className={`absolute inset-0 border-2 border-transparent group-hover:border-green-500 rounded-2xl transition-all duration-300`}></div>
+                <div className="absolute inset-0 border-2 border-transparent group-hover:border-green-500 rounded-2xl transition-all duration-300"></div>
               </div>
-            </div>
+            </AnimatedSection>
           ))}
         </div>
 
         {/* Best Sellers Section */}
-        <div
-          className={`transform transition-all duration-1000 delay-500 ${
-            isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-          }`}
-        >
+        <AnimatedSection animation="zoomIn" delay={0.5} duration={0.8}>
           <div className="bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl p-8 md:p-12 text-white text-center">
             <h3 className="text-3xl font-bold mb-4">Explore Our Full Catalog</h3>
             <p className="text-xl mb-8 text-white/90">
@@ -155,26 +131,22 @@ const Products = () => {
               View All Products
             </button>
           </div>
-        </div>
+        </AnimatedSection>
 
         {/* Trust Badges */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-16">
-          {[
-            { icon: '✓', text: 'Quality Assured' },
-            { icon: '🚚', text: 'Fast Delivery' },
-            { icon: '💯', text: 'Best Prices' },
-            { icon: '🤝', text: 'Expert Support' },
-          ].map((badge, index) => (
-            <div
+          {trustBadges.map((badge, index) => (
+            <AnimatedSection
               key={index}
-              className={`text-center transform transition-all duration-700 ${
-                isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'
-              }`}
-              style={{ transitionDelay: `${700 + index * 100}ms` }}
+              animation="fadeInUp"
+              delay={0.7 + (0.1 * index)}
+              duration={0.6}
             >
-              <div className="text-4xl mb-2">{badge.icon}</div>
-              <p className="text-gray-700 font-medium">{badge.text}</p>
-            </div>
+              <div className="text-center">
+                <div className="text-4xl mb-2">{badge.icon}</div>
+                <p className="text-gray-700 font-medium">{badge.text}</p>
+              </div>
+            </AnimatedSection>
           ))}
         </div>
       </div>
